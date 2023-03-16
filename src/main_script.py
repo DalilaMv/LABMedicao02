@@ -13,7 +13,7 @@ repositories = []
 
 query = '''
 query {
-  search(query: "stars:>100, language: Java", type: REPOSITORY, first: 20, after: null) {
+  search(query: "stars:>100, language: Java", type: REPOSITORY, first: 100, after: null) {
     nodes {
       ... on Repository {
         nameWithOwner
@@ -37,7 +37,6 @@ headers = {"Authorization": "Bearer " + token}
 count = 0
 data = []
 cursor = None
-response = requests.post(url, json={"query": query}, headers=headers)
 
 while count < 1000:
     if cursor:
@@ -45,6 +44,8 @@ while count < 1000:
             'after: null', 'after: "%s"' % cursor)
         response = requests.post(
             url, json={"query": query_with_cursor}, headers=headers)
+    else:
+        response = requests.post(url, json={"query": query}, headers=headers)
 
     if response.status_code == 200:
         repos = response.json()['data']['search']['nodes']
