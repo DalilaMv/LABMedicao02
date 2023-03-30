@@ -4,3 +4,4 @@ pandas
 matplotlib
 PyGithub
 GitPython
+numpy
